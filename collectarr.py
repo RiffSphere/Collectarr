@@ -3,7 +3,7 @@ import json
 import configparser
 
 parser = configparser.ConfigParser()
-parser.read("collectarr.conf")
+parser.read("/config/collectarr.conf")
 
 host=parser.get("config","host")
 port=parser.get("config","port")
