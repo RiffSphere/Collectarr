@@ -43,3 +43,14 @@ The directory path can be specified when running the command.
 If not specified, the script path will be used as config folder.
 
 In the config folder, make a copy of `collectarr.conf.example`, rename it `collectarr.conf` and open it with any text editor.
+
+#### tmdb
+
+- **apiKey** - Set your tmdb api key. If you don't plan on using the "smart" actor feature, this can be empty.
+
+#### Radarr settings
+- **host** - The hostname or IP of Radarr
+- **port** - The port Radarr is using (7878 by default)
+- **apiKey** - Can be found under Settings > General.
+- **https** - [`True`|`False`] - Add `https://` instead of `http://` before the _server_ setting when putting the Radarr URL together. **only http tested**
+
