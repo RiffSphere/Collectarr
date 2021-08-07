@@ -1,12 +1,126 @@
-[config]
-host=localhost
+[tmdb]
+; tmdb apiKey
+;       Moved to top for easy editing
+;       Can be kept empty
+apiKey=EDIT your tmdb key
+
+[Radarr]
+; Radarr settings
+;   Host
+;        Don't include http(s) or /
+host=EDIT your radarr ip/hotname
+
+;   Port
+;       Just the port number, no :
 port=7878
-apiKey=yourapikeyhere
-; Enable the list in Radarr
+
+;   apiKey
+;       Your api key
+apiKey=EDIT your radarr api key
+;   https
+;        True to use https, False to use http
+https=False
+
+[Collectarr]
+; Program settings
+;   dryrun
+;       If set to True, program will run as configured, but not make changes to Radarr
+;       Can be used to test settings and check log
+dryrun=false
+;   removealllists
+;       As expected, removing all current lists from Radarr
+;       WARNING: can not be un-done and should be False
+;       Line can even be removed from config
+removealllists=False
+;   removeCollectarractorlists
+;       Remove all actor lists previously added by Collectarr
+;       This only removes the lists, not the movies
+removeCollectarractorlists=False
+;   removeCollectarrcollectionlists
+;       Remove all actor lists previously added by Collectarr
+;       This only removes the lists, not the movies
+removeCollectarrcollectionlists=False
+;   addcollections
+;       Execute the add collections for all (monitored if set) movies function
+;       Suggest to keep True, since this is the main function of the program
+addcollections=True
+;   addactors
+;       Enable adding actors
+addactors=False
+;   Rootfolder
+;       first: Querry Radarr for all configured rootfolders, and use the first configured
+;       movie: Set rootfolder to movie path without the movie name
+rootfolder=first
+;   movielistnameaddon
+;       Lists added will be named according to the collection name provided by Radarr
+;       Add a personal suffix to recognize list is added by Collectarr
+;       Will also be used to remove lists added by Collectarr
+movielistnameaddon= - Collection Added by Collectarr
+;   movielistnameaddon
+;       Lists added will be named according to the collection name provided by Radarr
+;       Add a personal suffix to recognize list is added by Collectarr
+;       Will also be used to remove lists added by Collectarr
+actorlistnameaddon= - Actor Added by Collectarr
+
+[Log]
+; Log settings
+;   quiet
+;       Don't log to command line.
+;       Set False for docker or debugging.
+quiet=False
+;   nolog
+;       Log nothing if you don't care anyway
+nolog=False
+;   nocollectionlog
+;       Log movies in Radarr that are not part of a collection
+;       Suggest False to limit log file
+nocollectionlog=False
+;   loginfo
+;       Shows more information about actions taken
+;       Suggest True, else only error and list adding is logged.
+loginfo=True
+
+[Movie]
+; Movie information used for lists creation
+;   Only create lists for movies that are monitored
+;       If you have multiple movies of 1 collection, it will create a list if 1 of them is monitored
+monitoredonly=False
+;   enabled
+;       Enable the movie list in Radarr
+;       Suggest True, else the list will not be used until (manually) enabled
 enabled=True
-; Add movies from the list to Radarr
+;   enableAuto
+;       Add movies from the list to Radarr
+;       Strongly suggest to keep True, or Radarr wont add movies from the list
+;       Set shouldMonitor to False if you don't want Radarr to monitor the movies added
 enableAuto=True
-; Monitor added movies
+;   shouldMonitor
+;       Have Radarr monitor movies added by list
 shouldMonitor=True
-; Search for added movies
+;   searchOnAdd
+;       Have Radarr search movies when added
 searchOnAdd=True
+
+[Actor]
+; Actor information used for list creation
+;   monitoredonly
+;       only count actor appearing if movie is monitored
+monitoredonly=false
+;   enabled
+;       Enable the actor list in Radarr
+;       Suggest True, else the list will not be used until (manually) enabled
+enabled=True
+;   enableAuto
+;       Add movies from the list to Radarr
+;       Strongly suggest to keep True, or Radarr wont add movies from the list
+;       Set shouldMonitor to False if you don't want Radarr to monitor the movies added
+enableAuto=True
+;   shouldMonitor
+;       Have Radarr monitor movies added by list
+shouldMonitor=True
+;   searchOnAdd
+;       Have Radarr search movies when added
+searchOnAdd=True
+;   actormin
+;       How often should an actor be in the (monitored if set) movies before a list is added
+actormin=20
