@@ -72,5 +72,8 @@ There are 2 options to configure your rootfolder:
         - Is part of a collection
         - Has an actor in it
     - Removes the last part from it
+    - Example:
+        - If you have [The Fast and the Furious (2001)](https://www.themoviedb.org/movie/9799-the-fast-and-the-furious) as only part of [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) in Radarr, with path "/data/The Fast and the Furious (2001)", the [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) list will have folder "/data"
+        - If you also have [2 Fast 2 Furious (2003)](https://www.themoviedb.org/movie/584-2-fast-2-furious), added to Radarr after [The Fast and the Furious (2001)](https://www.themoviedb.org/movie/9799-the-fast-and-the-furious), with path "/movies/2 Fast 2 Furious (2003)", the [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) list will have folder "/movies"
 
 
