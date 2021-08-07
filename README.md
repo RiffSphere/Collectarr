@@ -44,13 +44,33 @@ If not specified, the script path will be used as config folder.
 
 In the config folder, make a copy of `collectarr.conf.example`, rename it `collectarr.conf` and open it with any text editor.
 
-#### tmdb
-
-- **apiKey** - Set your tmdb api key. If you don't plan on using the "smart" actor feature, this can be empty.
+#### tmdb settings
+- **apiKey** - Set your tmdb api key. If you don't plan on using the "smart" actor feature, this can be empty
 
 #### Radarr settings
 - **host** - The hostname or IP of Radarr
 - **port** - The port Radarr is using (7878 by default)
 - **apiKey** - Can be found under Settings > General.
 - **https** - [`True`|`False`] - Add `https://` instead of `http://` before the _server_ setting when putting the Radarr URL together. **only http tested**
+
+#### Collectarr settings (actions taken in listed order)
+- **dryrun** - [`True`|`False`] - Execute and log information as normally, but don't ask Radarr to make changes. Useful to test actor numbers or see how many collections you can complete
+- **removealllists** - [`True`|`False`] - Delete all lists currently in Radarr. SHOULD BE USED WITH CARE. Created to clean up your lists if you started manually. Will delete all lists, including IMDB lists
+- **removeCollectarractorlists** - [`True`|`False`] - Delete actor lists added by Collectarr (**actorlistnameaddon* will be used to determine)
+- **removeCollectarrcollectionlists** - [`True`|`False`] - Delete collection lists added by Collectarr (**movielistnameaddon* will be used to determine)
+- **addcollections** - [`True`|`False`] - Add lists for all collections Radarr has at least 1 movie from, ignoring existing ones
+- **addactors** - [`True`|`False`] - Add lists for actors that appear in a lot (**actormin**) of movies you have, ignoring existings ones
+- **rootfolder** - ['first'|'movie'] - [More info](https://github.com/RiffSphere/Collectarr#rootfolder-information)
+
+## Rootfolder information
+The rootfolder is where movies from a list will get added.
+The same setting will be used for collections and actors.
+There are 2 options to configure your rootfolder:
+- first: use the first configured rootfolder in Radarr. Can be found under Settings -> Media Management
+- movie:
+    - Will take the path of the last movie added in Radarr that:
+        - Is part of a collection
+        - Has an actor in it
+    - Removes the last part from it
+
 
