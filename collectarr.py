@@ -65,7 +65,6 @@ def config():
          tmdbapiKey
 
    # Load configuration
-   print(config_path+"collectarr.conf")
    parser = configparser.ConfigParser()
    parser.read(config_path+"collectarr.conf")
 
@@ -495,3 +494,5 @@ else:
    loginfo("****************************************************")
    loginfo("* Adding actors disabled (set to 0) in config file *")
    loginfo("****************************************************")
+
+sys.exit()
