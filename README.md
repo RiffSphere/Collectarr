@@ -101,7 +101,7 @@ Not completed.
 docker create \
   --name=Collectarr \
   -v <path to data>:/config \
-  add docker hub path
+  riffsphere/collectarr
 ```
 
 ## Special thanks
