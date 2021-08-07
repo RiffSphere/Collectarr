@@ -1,5 +1,4 @@
 requests
-json
 configparser
 sys
 os
