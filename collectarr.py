@@ -5,7 +5,7 @@ nolog=False
 def get_dir(input_path):
     path = list(os.path.split(input_path))
     if path[0] in ["~","."]: path[0] = os.getcwd()
-    return os.path.join(*path)
+    return os.path.join(*path) + "/"
 
 def log(text,time=True):
    pay=""
