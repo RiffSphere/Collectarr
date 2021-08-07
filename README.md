@@ -14,7 +14,8 @@ The script can also set up lists for actors. To do so, it will check all your mo
 
 **Jump to:**
 - [Setting up config files](https://github.com/RiffSphere/Collectarr#setting-up-the-configuration-files)
-- 
+- [Install and Run](https://github.com/RiffSphere/Collectarr#installation-and-running)
+- [Special thanks](https://github.com/RiffSphere/Collectarr#special-thanks)
 
 ## Features:
 - Automatically added into Radarr.
@@ -61,6 +62,55 @@ In the config folder, make a copy of `collectarr.conf.example`, rename it `colle
 - **addcollections** - [`True`|`False`] - Add lists for all collections Radarr has at least 1 movie from, ignoring existing ones
 - **addactors** - [`True`|`False`] - Add lists for actors that appear in a lot (**actormin**) of movies you have, ignoring existings ones
 - **rootfolder** - ['first'|'movie'] - [More info](https://github.com/RiffSphere/Collectarr#rootfolder-information)
+- **movielistnameaddon** - List name will be collection name and what is set here. Used by **removeCollectarrcollectionlists**. Try to keep it specific
+- **actorlistnameaddon** - List name will be actor name and what is set here. Used by **removeCollectarractorlists**. Try to keep it specific
+
+#### Log settings
+- **quiet** - [`False`|`True`] - Log to console, useful for debugging or docker
+- **nolog** - [`True`|`False`] - Disable all logging if you just don't care
+- **nocollectionlog** - [`True`|`False`] - Log all movies that are not part of a collection
+- **loginfo** - [`True`|`False`] - Log more information
+
+#### Movie/collection settings
+- **monitoredonly** - [`True`|`False`] - Only scan movies monitored in Radarr
+- **enabled** - [`True`|`False`] - Enable the list when added. **Should probably be True**
+- **enableAuto* - [`True`|`False`] - Automatically add movies from the list. **Should probably be True**
+- **shouldMonitor** - [`True`|`False`] - Monitor movies added by the list
+- **searchOnAdd** - [`True`|`False`] - Search for movie when added
+
+#### Actor settings
+- **monitoredonly** - [`True`|`False`] - Only scan movies monitored in Radarr
+- **enabled** - [`True`|`False`] - Enable the list when added. **Should probably be True**
+- **enableAuto* - [`True`|`False`] - Automatically add movies from the list. **Should probably be True**
+- **shouldMonitor** - [`True`|`False`] - Monitor movies added by the list
+- **searchOnAdd** - [`True`|`False`] - Search for movie when added
+- **actormin** - How many movies in your Radarr database should an actor be in before adding a list?
+    -  Start high to prevent too many actors being added
+    -  All movies are scanned on each run, so newly added movies can/will add more actor lists
+
+## Installation and Running
+**Local**
+- Download and extract the zip or clone with git to a location of your choice.
+- You may name and place the config folder anywhere on the computer, if not passed the config file is expected to be the same as the script folder.
+- In the config folder, make a copy of `collectarr.conf.example` and rename it `collectarr.conf`, edit `collectarr.conf` for your values.
+- In Command Prompt or Terminal, navigate into the downloaded folder and run `python collectarr.py ./config` (./config part can be dropped) to begin.
+
+**Docker Container** 
+Not completed.
+```
+docker create \
+  --name=Collectarr \
+  -v <path to data>:/config \
+  add docker hub path
+```
+
+## Special thanks
+Special thanks to [RhinoRhys](https://github.com/RhinoRhys). This script is inspired by his original [radarr-collections](https://github.com/RhinoRhys/radarr-collections).
+Some of his code has been "reused" (aka stolen) for this project, as well as this layout being based on his.
+
+Also thanks to the [Radarr](https://radarr.video/) project for their amazing tool, and [TMDB](https://www.themoviedb.org/) for the great api.
+
+Feel free to clone and change all you want!
 
 ## Rootfolder information
 The rootfolder is where movies from a list will get added.
@@ -68,10 +118,10 @@ The same setting will be used for collections and actors.
 There are 2 options to configure your rootfolder:
 - first: use the first configured rootfolder in Radarr. Can be found under Settings -> Media Management
 - movie:
-    - Will take the path of the last movie added in Radarr that:
+    - Will take the path of the **latest movie added** in Radarr that:
         - Is part of a collection
         - Has an actor in it
-    - Removes the last part from it
+    - Removes the last part (movie name) from it
     - Example:
         - If you have [The Fast and the Furious (2001)](https://www.themoviedb.org/movie/9799-the-fast-and-the-furious) as only part of [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) in Radarr, with path "/data/The Fast and the Furious (2001)", the [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) list will have folder "/data"
         - If you also have [2 Fast 2 Furious (2003)](https://www.themoviedb.org/movie/584-2-fast-2-furious), added to Radarr after [The Fast and the Furious (2001)](https://www.themoviedb.org/movie/9799-the-fast-and-the-furious), with path "/movies/2 Fast 2 Furious (2003)", the [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) list will have folder "/movies"
