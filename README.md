@@ -98,7 +98,7 @@ In the config folder, make a copy of `collectarr.conf.example`, rename it `colle
 **Docker Container** 
 ```
 docker create \
-  --name=Collectarr \
+  --name=collectarr \
   -v <path to data>:/config \
   riffsphere/collectarr
 ```
