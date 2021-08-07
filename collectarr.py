@@ -426,7 +426,7 @@ start_time = datetime.datetime.now().strftime("%y-%m-%d_%H-%M-%S")
 #     Allow config file to be passed as parameter, useful for docker
 if len(sys.argv) != 1 and sys.argv[1][0] != "-":
    config_path = sys.argv[1] 
-   if not config_path[-1:]=="/": config_path=config_path+"/"
+   if not (config_path.strip()[-1:]=="/"): config_path=config_path+"/"
 #     If not passed, use current dir
 else:
    config_path = "./"
