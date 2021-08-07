@@ -16,7 +16,8 @@ The script can also set up lists for actors. To do so, it will check all your mo
 - [Setting up config files](https://github.com/RiffSphere/Collectarr#setting-up-the-configuration-files)
 - [Install and Run](https://github.com/RiffSphere/Collectarr#installation-and-running)
 - [Special thanks](https://github.com/RiffSphere/Collectarr#special-thanks)
-
+- [Disclaimer](https://github.com/RiffSphere/Collectarr#disclaimer)
+ 
 ## Features:
 - Automatically added into Radarr.
     - Using the list function: automatically updates when TMDB does.
@@ -125,4 +126,13 @@ There are 2 options to configure your rootfolder:
         - If you have [The Fast and the Furious (2001)](https://www.themoviedb.org/movie/9799-the-fast-and-the-furious) as only part of [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) in Radarr, with path "/data/The Fast and the Furious (2001)", the [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) list will have folder "/data"
         - If you also have [2 Fast 2 Furious (2003)](https://www.themoviedb.org/movie/584-2-fast-2-furious), added to Radarr after [The Fast and the Furious (2001)](https://www.themoviedb.org/movie/9799-the-fast-and-the-furious), with path "/movies/2 Fast 2 Furious (2003)", the [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) list will have folder "/movies"
 
+## Disclaimer
 
+This tool is provided as-is. You are free to use, edit or distribute it in any way you want.
+Using the tool is at your own risk.
+While I will try to fix reported errors, there is no guarantee I will.
+I can not be held responsible for any results from using this tool.
+This includes, but is not limited to, messing up your Radarr database, losing data or burning down your house.
+
+Making a Radarr backup before using this tool, and running with dryrun set to True a couple times, is highly suggested.
+Good luck!
