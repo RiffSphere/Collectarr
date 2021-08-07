@@ -1,5 +1,5 @@
 #!/usr/bin/with-contenv bash
-if [[ ! -f /config/collectarr.conf.example ]]; then
+if [[ ! -f /config/collectarr.conf ]]; then
     echo "First run, cloning config into /config"
     mv /app/collectarr.conf.example /config
 fi
