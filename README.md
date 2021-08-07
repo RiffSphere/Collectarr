@@ -6,11 +6,11 @@ Also supports "smart" actor lists based on [TMDB](https://www.themoviedb.org/).
 While Radarr has the tmdb collection id for each movie (that is part of a collection), and allows to quickly setup a collection list for monitoring from the movie page, there is no quick way to do so for all movies.
 This script will poll Radarr for all movies, get the tmdb collection id, and set up a collection list for it.
 
-Example: If you have [The Fast and the Furious (2001)](https://www.themoviedb.org/movie/9799-the-fast-and-the-furious) in your collection, it will add a [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) list to Radarr.
+- Example: If you have [The Fast and the Furious (2001)](https://www.themoviedb.org/movie/9799-the-fast-and-the-furious) in your collection, it will add a [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) list to Radarr.
 
 The script can also set up lists for actors. To do so, it will check all your movies, get the actors for each movie from TMDB, keep track how many movies your have with each actor, and add a list if that's more than a configured number.
 
-Example: If you have [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) (time of writing there are 9 movies) in Radarr, and set actormin=8, a list for [Vin Diesel](https://www.themoviedb.org/person/12835-vin-diesel?language=en-US) will be created.
+- Example: If you have [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) (time of writing there are 9 movies) in Radarr, and set actormin=8, a list for [Vin Diesel](https://www.themoviedb.org/person/12835-vin-diesel?language=en-US) will be created.
 
 Last 3 options are to remove lists: ALL lists, Collectarr actor lists, Collectarr collection lists.
 
