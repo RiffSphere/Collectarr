@@ -1,6 +1,2 @@
-json
 requests
 configparser
-sys
-os
-datetime
