@@ -59,7 +59,6 @@ def config():
          movielistnameaddon, actorlistnameaddon, dryrun,  \
          tmdbapiKey
 
-   print(config_path+"collectarr.conf")
    # Load configuration
    parser = configparser.ConfigParser()
    parser.read(config_path+"collectarr.conf")
