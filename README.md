@@ -12,9 +12,9 @@ The script can also set up lists for actors. To do so, it will check all your mo
 
 - Example: If you have [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) (time of writing there are 9 movies) in Radarr, and set actormin=8, a list for [Vin Diesel](https://www.themoviedb.org/person/12835-vin-diesel?language=en-US) will be created.
 
-Last 3 options are to remove lists: ALL lists, Collectarr actor lists, Collectarr collection lists.
-
 **Jump to:**
+- [Setting up config files](https://github.com/RiffSphere/Collectarr#setting-up-the-configuration-files)
+- 
 
 ## Features:
 - Automatically added into Radarr.
@@ -36,3 +36,10 @@ Last 3 options are to remove lists: ALL lists, Collectarr actor lists, Collectar
   
 **Getting a TMDB API key:** TMDB offers free API keys to anyone with an account. Simply sign up and request a key via your account settings.
   
+## Setting up the configuration files
+
+The config folder can be named and placed anywhere on your computer.
+The directory path can be specified when running the command.
+If not specified, the script path will be used as config folder.
+
+In the config folder, make a copy of `collectarr.conf.example`, rename it `collectarr.conf` and open it with any text editor.
