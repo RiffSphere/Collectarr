@@ -1,81 +1,126 @@
-import requests
-import json
-import configparser
+[tmdb]
+; tmdb apiKey
+;       Moved to top for easy editing
+;       Can be kept empty
+apiKey=EDIT your tmdb key
 
-parser = configparser.ConfigParser()
-parser.read("/config/collectarr.conf")
+[Radarr]
+; Radarr settings
+;   Host
+;        Don't include http(s) or /
+host=EDIT your radarr ip/hotname
 
-host=parser.get("config","host")
-port=parser.get("config","port")
-host="http://"+host+":"+port+"/api/v3/"
-apiKey=parser.get("config","apiKey")
-enabled=bool(parser.get("config","enabled"))
-enableAuto=bool(parser.get("config","enableAuto"))
-shouldMonitor=bool(parser.get("config","shouldMonitor"))
-searchOnAdd=bool(parser.get("config","searchOnAdd"))
+;   Port
+;       Just the port number, no :
+port=7878
 
-#host="http://10.0.0.11:7878/api/v3/"
-apiKey="ec3e58837e6b4e69a7d638a3a416d450"
-# get first configured rootfolder
-response = requests.get(host+"rootfolder?apiKey="+apiKey)
-rootfolder = response.json()[0]["path"]
+;   apiKey
+;       Your api key
+apiKey=EDIT your radarr api key
+;   https
+;        True to use https, False to use http
+https=False
 
-# setup collection dictionary
-colls={"0": "Nothing"}
-colls.pop("0")
+[Collectarr]
+; Program settings
+;   dryrun
+;       If set to True, program will run as configured, but not make changes to Radarr
+;       Can be used to test settings and check log
+dryrun=false
+;   removealllists
+;       As expected, removing all current lists from Radarr
+;       WARNING: can not be un-done and should be False
+;       Line can even be removed from config
+removealllists=False
+;   removeCollectarractorlists
+;       Remove all actor lists previously added by Collectarr
+;       This only removes the lists, not the movies
+removeCollectarractorlists=False
+;   removeCollectarrcollectionlists
+;       Remove all actor lists previously added by Collectarr
+;       This only removes the lists, not the movies
+removeCollectarrcollectionlists=False
+;   addcollections
+;       Execute the add collections for all (monitored if set) movies function
+;       Suggest to keep True, since this is the main function of the program
+addcollections=True
+;   addactors
+;       Enable adding actors
+addactors=False
+;   Rootfolder
+;       first: Querry Radarr for all configured rootfolders, and use the first configured
+;       movie: Set rootfolder to movie path without the movie name
+rootfolder=first
+;   movielistnameaddon
+;       Lists added will be named according to the collection name provided by Radarr
+;       Add a personal suffix to recognize list is added by Collectarr
+;       Will also be used to remove lists added by Collectarr
+movielistnameaddon= - Collection Added by Collectarr
+;   movielistnameaddon
+;       Lists added will be named according to the collection name provided by Radarr
+;       Add a personal suffix to recognize list is added by Collectarr
+;       Will also be used to remove lists added by Collectarr
+actorlistnameaddon= - Actor Added by Collectarr
 
-# get all movies in radarr
-response = requests.get(host+"movie?apiKey="+apiKey)
-allmovies = response.json()
+[Log]
+; Log settings
+;   quiet
+;       Don't log to command line.
+;       Set False for docker or debugging.
+quiet=False
+;   nolog
+;       Log nothing if you don't care anyway
+nolog=False
+;   nocollectionlog
+;       Log movies in Radarr that are not part of a collection
+;       Suggest False to limit log file
+nocollectionlog=False
+;   loginfo
+;       Shows more information about actions taken
+;       Suggest True, else only error and list adding is logged.
+loginfo=True
 
-# go over all movies in radarr, storing their collection information
-for movie in allmovies:
-   try:
-      colls.update({str(movie["collection"]["tmdbId"]): movie["collection"]["name"]})
-   except KeyError:
-      print(movie["title"] + " - No collection")
+[Movie]
+; Movie information used for lists creation
+;   Only create lists for movies that are monitored
+;       If you have multiple movies of 1 collection, it will create a list if 1 of them is monitored
+monitoredonly=False
+;   enabled
+;       Enable the movie list in Radarr
+;       Suggest True, else the list will not be used until (manually) enabled
+enabled=True
+;   enableAuto
+;       Add movies from the list to Radarr
+;       Strongly suggest to keep True, or Radarr wont add movies from the list
+;       Set shouldMonitor to False if you don't want Radarr to monitor the movies added
+enableAuto=True
+;   shouldMonitor
+;       Have Radarr monitor movies added by list
+shouldMonitor=True
+;   searchOnAdd
+;       Have Radarr search movies when added
+searchOnAdd=True
 
-# check existing collections and remove
-response = requests.get(host+"importlist?apiKey="+apiKey)
-alllists = response.json()
-# go over each import list
-for list in alllists:
-   # check if tmdb list
-   if list["listType"] == "tmdb":
-      # remove value
-      for fields in list["fields"]:
-         try: 
-            colls.pop(fields["value"])
-         except KeyError:
-            print("List with no downloaded movies found - Probably actor list")
-#jprint(alllists)
-
-# go over all collections we found
-for x in colls:
-   print("Adding: " + x + " - " + colls[x])
-
-   # setup data to add collection
-   data={"enabled": enabled,
-         "enableAuto": enableAuto,
-         "shouldMonitor": shouldMonitor,
-         "qualityProfileId": 1,
-         "searchOnAdd": searchOnAdd,
-         "minimumAvailability": "tba",
-         "listType": "tmdb",
-         "listOrder": 1,
-         "name": colls[x] + " - Added by Collectarr",
-         "fields": [{ "name": "collectionId", "value": x }],
-         "implementationName": "TMDb Collection",
-         "implementation": "TMDbCollectionImport",
-         "configContract": "TMDbCollectionSettings",
-         "infoLink": "https://wiki.servarr.com/Radarr_Supported_tmdbcollectionimport",
-         "tags": [],
-         "rootFolderPath": rootfolder}
-   data=json.dumps(data, sort_keys=True, indent=4)
-   # add list to radarr
-   r = requests.post(url = host+"importlist?apiKey="+apiKey, data=data)
-   #output result
-   if r.status_code==201:
-      print("Added: " + x + " - " + colls[x])
-   else:
-      print("Error: " + x + " - " + colls[x] + " - Probably duplicate")
+[Actor]
+; Actor information used for list creation
+;   monitoredonly
+;       only count actor appearing if movie is monitored
+monitoredonly=false
+;   enabled
+;       Enable the actor list in Radarr
+;       Suggest True, else the list will not be used until (manually) enabled
+enabled=True
+;   enableAuto
+;       Add movies from the list to Radarr
+;       Strongly suggest to keep True, or Radarr wont add movies from the list
+;       Set shouldMonitor to False if you don't want Radarr to monitor the movies added
+enableAuto=True
+;   shouldMonitor
+;       Have Radarr monitor movies added by list
+shouldMonitor=True
+;   searchOnAdd
+;       Have Radarr search movies when added
+searchOnAdd=True
+;   actormin
+;       How often should an actor be in the (monitored if set) movies before a list is added
+actormin=20
