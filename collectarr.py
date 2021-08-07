@@ -65,6 +65,7 @@ def config():
          tmdbapiKey
 
    # Load configuration
+   print(config_path+"collectarr.conf")
    parser = configparser.ConfigParser()
    parser.read(config_path+"collectarr.conf")
 
