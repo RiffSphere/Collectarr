@@ -96,7 +96,6 @@ In the config folder, make a copy of `collectarr.conf.example`, rename it `colle
 - In Command Prompt or Terminal, navigate into the downloaded folder and run `python collectarr.py ./config` (./config part can be dropped) to begin.
 
 **Docker Container** 
-Not completed.
 ```
 docker create \
   --name=Collectarr \
