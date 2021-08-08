@@ -51,6 +51,22 @@ def nologfatal(error):
     nolog = True
     fatal("ERROR - " + error)
 
+def loadactorblacklists():
+   global actorblacklist
+   try:
+      with open(config_path + "blacklist_actor.conf") as file:
+         actorblacklist = [line.strip() for line in file]
+   except FileNotFoundError:
+      pass
+
+def loadcollectionblacklists():
+   global collectionblacklist
+   try:
+      with open(config_path + "blacklist_collection.conf") as file:
+         collectionblacklist = [line.strip() for line in file]
+   except FileNotFoundError:
+      pass
+
 def str2bool(v):
   return v.lower() in ("yes", "true", "t", "1")
 
@@ -58,11 +74,12 @@ def config():
    global host, apiKey, \
          quiet, nolog, nocollectionlog, loginfoactive, \
          rootfoldertype, \
-         doaddcollections, doremovecollectarractorlists, doremovecollectarrcollectionlists, doremovealllists, doaddactors, \
+         doaddcollections, doremovecollectarractorlists, doremovecollectarrcollectionlists, doremovealllists, doaddactors, doremoveblacklistedlists, \
          movieenabled, movieenableAuto, movieshouldMonitor, moviesearchOnAdd, moviemonitoredonly, \
          actorenabled, actorenableAuto, actorshouldMonitor, actorsearchOnAdd, actormonitoredonly, actormin, \
          actorcountvoice, actorcountuncredited, \
-         movielistnameaddon, actorlistnameaddon, dryrun,  \
+         movielistnameaddon, actorlistnameaddon, dryrun, \
+         actorblacklist, collectionblacklist, \
          tmdbapiKey
 
    # Load configuration
@@ -82,6 +99,7 @@ def config():
       if movielistnameaddon=="": movielistnameaddon=" - Collection Added by Collectarr"
       actorlistnameaddon=" " + parser.get("Collectarr","actorlistnameaddon").strip()
       if actorlistnameaddon=="": actorlistnameaddon=" - Actor Added by Collectarr"
+      doremoveblacklistedlists=str2bool(parser.get("Collectarr","removeblacklistedlists").strip())
 
       # Radarr info
       hosturl=parser.get("Radarr","host").strip()
@@ -136,6 +154,9 @@ def config():
       host="http://"
    host=host+hosturl+":"+port+"/api/v3/"
 
+   actorblacklist=[]
+   collectionblacklist=[]
+
 def setupRootfolder():
    global rootfolder
    # verify rootfoldertype is set and has a valid option
@@ -176,6 +197,10 @@ def RemoveLists(CollectarrOnly=True, mode="none"):
          fromcollectarr=True
       if mode=="actor" and actorlistnameaddon in list["name"]:
          fromcollectarr=True
+      if mode=="blacklist":
+         for f in list["fields"]:
+            if str(f["value"]) in actorblacklist or str(f["value"]) in collectionblacklist:
+               fromcollectarr=True
       if fromcollectarr or not CollectarrOnly:
          lognoreturn("Removing " + list["name"])
          if not dryrun:
@@ -258,11 +283,18 @@ def AddCollections():
                colls.pop(fields["value"])
             except KeyError:
                pass
+   # remove blacklisted collections
+   loginfo("Prevent adding blacklisted collections.")
+   for x in collectionblacklist:
+      try:
+         colls.pop(x)
+      except KeyError:
+         pass
 
    loginfo("Adding " + str(len(colls)) + " new collection lists")
    # go over all collections we found
    for x in colls:
-      lognoreturn("Adding: " + x + " - " + colls[x])
+      lognoreturn("Adding collection " + colls[x] + " (" + str(x) + ")" )
 
       # setup data to add collection
       if rootfoldertype == "first":
@@ -373,14 +405,17 @@ def ActorLists():
             except KeyError:
                pass
 
+   # counting how many actor lists will be added, just for info
    counter=0
    for x in castname:
-      if castcount[x] >= actormin:
+      if castcount[x] >= actormin and not str(x) in actorblacklist:
          counter=counter+1
    loginfo(str(counter) + " new actors appear " + str(actormin) + " or more times as actor in movies in Radarr")
+   
+   # add all actor lists needed
    for x in castname:
-      if castcount[x] >= actormin:
-         lognoreturn("Adding actor list for: " + castname[x] + " appearing in " + str(castcount[x]) + " movies in Radarr")
+      if castcount[x] >= actormin and not str(x) in actorblacklist:
+         lognoreturn("Adding actor " + castname[x] + " (" + str(x) + ") appearing in " + str(castcount[x]) + " movies in Radarr")
          if rootfoldertype == "first":
             rtfolder = rootfolder
          if rootfoldertype == "movie":
@@ -453,11 +488,31 @@ loginfo("API tested succesfully")
 setupRootfolder()
 loginfo("Rootfolder parsed")
 
+# load needed blacklists
+if doremoveblacklistedlists or doaddactors:
+   loginfo("************************")
+   loginfo("* Load actor blacklist *")
+   loginfo("************************")
+   loadactorblacklists()
+
+if doremoveblacklistedlists or doaddcollections:
+   loginfo("*****************************")
+   loginfo("* Load collection blacklist *")
+   loginfo("*****************************")
+   loadcollectionblacklists()
+
+
 if doremovealllists:
    loginfo("****************************************")
    loginfo("* Start removing ALL lists from Radarr *")
    loginfo("****************************************")
    RemoveLists(False)
+
+if doremoveblacklistedlists:
+   loginfo("************************************************")
+   loginfo("* Start removing blacklisted lists from Radarr *")
+   loginfo("************************************************")
+   RemoveLists(True,"blacklist")
 
 if doremovecollectarractorlists:
    loginfo("*************************************************************")
