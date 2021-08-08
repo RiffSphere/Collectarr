@@ -32,6 +32,10 @@ dryrun=false
 ;       WARNING: can not be un-done and should be False
 ;       Line can even be removed from config
 removealllists=False
+;   removeblacklistedlist
+;       Remove lists containing a blacklisted id
+;       Either manually or automatically added
+removeblacklistedlists=False
 ;   removeCollectarractorlists
 ;       Remove all actor lists previously added by Collectarr
 ;       This only removes the lists, not the movies
