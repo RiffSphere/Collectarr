@@ -368,8 +368,8 @@ def ActorLists():
             allactors=response.json()
             # saving cast id, name and how often he appears
             for actor in allactors["cast"]:
-               if not "(voice)" in actor["character"].lower() or actorcountvoice:
-                  if not "(uncredited)" in actor["character"].lower() or actorcountuncredited:
+               if not "(voice)" in actor["character"] or actorcountvoice:
+                  if not "(uncredited)" in actor["character"] or actorcountuncredited:
                      castname.update({str(actor["id"]):actor["name"]})
                      try:
                         num=int(castcount[str(actor["id"])])+1
