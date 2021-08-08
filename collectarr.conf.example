@@ -121,6 +121,14 @@ shouldMonitor=True
 ;   searchOnAdd
 ;       Have Radarr search movies when added
 searchOnAdd=True
+;   countvoice
+;       Some voice actors appear in many animated movies, doing a voice, often for small rolls
+;       This allows to not count an actor doing voice in a movie
+countvoice=False
+;   countuncredited
+;       Sometimes actors are not credited in the movie, but TMDB still lists them
+;       This allows to not count uncredited actors when making lists
+countuncredited=False
 ;   actormin
 ;       How often should an actor be in the (monitored if set) movies before a list is added
 actormin=20
