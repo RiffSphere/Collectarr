@@ -368,18 +368,25 @@ def ActorLists():
             allactors=response.json()
             # saving cast id, name and how often he appears
             for actor in allactors["cast"]:
-               if not "(voice)" in actor["character"] or actorcountvoice:
-                  if not "(uncredited)" in actor["character"] or actorcountuncredited:
-                     castname.update({str(actor["id"]):actor["name"]})
-                     try:
-                        num=int(castcount[str(actor["id"])])+1
-                     except KeyError:
-                        num=1
-                     castcount.update({str(actor["id"]):num})
-                     qualityprofile.update({str(actor["id"]):str(movie["qualityProfileId"])})
-                     temp=movie["path"]
-                     temp="/".join(temp.split("/")[:-1])
-                     rootfolders.update({str(actor["id"]):temp})
+               oktoadd=False
+               try:
+                  if not "(voice)" in actor["character"].lower() or actorcountvoice:
+                     if not "(uncredited)" in actor["character"].lower() or actorcountuncredited:
+                        oktoadd=True
+               except AttributeError:
+                  oktoadd=True
+               if oktoadd:
+                  castname.update({str(actor["id"]):actor["name"]})
+                  try:
+                     num=int(castcount[str(actor["id"])])+1
+                  except KeyError:
+                     num=1
+                  castcount.update({str(actor["id"]):num})
+                  qualityprofile.update({str(actor["id"]):str(movie["qualityProfileId"])})
+                  temp=movie["path"]
+                  temp="/".join(temp.split("/")[:-1])
+                  rootfolders.update({str(actor["id"]):temp})
+
          else:
             log("Error getting tmdb info for" + movie["title"]+ ": " + str(response.status_code))
 
