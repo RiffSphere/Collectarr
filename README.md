@@ -15,6 +15,7 @@ The script can also set up lists for actors. To do so, it will check all your mo
 **Jump to:**
 - [Setting up config files](https://github.com/RiffSphere/Collectarr#setting-up-the-configuration-files)
 - [Install and Run](https://github.com/RiffSphere/Collectarr#installation-and-running)
+- [Blacklist](https://github.com/RiffSphere/Collectarr#blacklist)
 - [Special thanks](https://github.com/RiffSphere/Collectarr#special-thanks)
 - [Disclaimer](https://github.com/RiffSphere/Collectarr#disclaimer)
  
@@ -58,6 +59,7 @@ In the config folder, make a copy of `collectarr.conf.example`, rename it `colle
 #### Collectarr settings (actions taken in listed order)
 - **dryrun** - [`True`|`False`] - Execute and log information as normally, but don't ask Radarr to make changes. Useful to test actor numbers or see how many collections you can complete
 - **removealllists** - [`True`|`False`] - Delete all lists currently in Radarr. SHOULD BE USED WITH CARE. Created to clean up your lists if you started manually. Will delete all lists, including IMDB lists
+- **removeblacklistedlists** - [`True`|`False`] - Remove blacklisted lists, that were previously added, from Radarr. Only supports remving the list, will not remove movies.
 - **removeCollectarractorlists** - [`True`|`False`] - Delete actor lists added by Collectarr (**actorlistnameaddon* will be used to determine)
 - **removeCollectarrcollectionlists** - [`True`|`False`] - Delete collection lists added by Collectarr (**movielistnameaddon* will be used to determine)
 - **addcollections** - [`True`|`False`] - Add lists for all collections Radarr has at least 1 movie from, ignoring existing ones
@@ -106,13 +108,11 @@ docker create \
   riffsphere/collectarr
 ```
 
-## Special thanks
-Special thanks to [RhinoRhys](https://github.com/RhinoRhys). This script is inspired by his original [radarr-collections](https://github.com/RhinoRhys/radarr-collections).
-Some of his code has been "reused" (aka stolen) for this project, as well as this layout being based on his.
 
-Also thanks to the [Radarr](https://radarr.video/) project for their amazing tool, and [TMDB](https://www.themoviedb.org/) for the great api.
-
-Feel free to clone and change all you want!
+## Blacklists
+Two files exist in the config directory:
+- blacklist_collection.conf - Contains the tmdb number for collections you don't want, 1 per line
+- blacklist_actor.conf - Contains the tmdb number for actors you don't want, 1 per line
 
 ## Rootfolder information
 The rootfolder is where movies from a list will get added.
@@ -127,6 +127,14 @@ There are 2 options to configure your rootfolder:
     - Example:
         - If you have [The Fast and the Furious (2001)](https://www.themoviedb.org/movie/9799-the-fast-and-the-furious) as only part of [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) in Radarr, with path "/data/The Fast and the Furious (2001)", the [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) list will have folder "/data"
         - If you also have [2 Fast 2 Furious (2003)](https://www.themoviedb.org/movie/584-2-fast-2-furious), added to Radarr after [The Fast and the Furious (2001)](https://www.themoviedb.org/movie/9799-the-fast-and-the-furious), with path "/movies/2 Fast 2 Furious (2003)", the [The Fast and the Furious Collection](https://www.themoviedb.org/collection/9485?language=en-US) list will have folder "/movies"
+
+## Special thanks
+Special thanks to [RhinoRhys](https://github.com/RhinoRhys). This script is inspired by his original [radarr-collections](https://github.com/RhinoRhys/radarr-collections).
+Some of his code has been "reused" (aka stolen) for this project, as well as this layout being based on his.
+
+Also thanks to the [Radarr](https://radarr.video/) project for their amazing tool, and [TMDB](https://www.themoviedb.org/) for the great api.
+
+Feel free to clone and change all you want!
 
 ## Disclaimer
 
