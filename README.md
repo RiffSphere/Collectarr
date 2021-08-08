@@ -88,6 +88,8 @@ In the config folder, make a copy of `collectarr.conf.example`, rename it `colle
 - **actormin** - How many movies in your Radarr database should an actor be in before adding a list?
     -  Start high to prevent too many actors being added
     -  All movies are scanned on each run, so newly added movies can/will add more actor lists
+- **countvoice** - [`False`|`True`] - Count an actor for a movie if he is listed as (voice)
+- **countuncredited** - [`False`|`True`] - Count an actor for a movie is he is listed as (uncredited)
 
 ## Installation and Running
 **Local**
