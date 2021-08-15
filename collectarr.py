@@ -341,6 +341,8 @@ def AddCollections():
             log(" - SUCCESS",False)
          elif r.status_code==401:
             fatal("apiKey not correct")
+         elif r.status_code==200:
+            log(" - FAILED, check if you have URLbase set in Radarr and configure",False)
          else:
             log(" - FAILED " + str(r.status_code),False)
       else:
@@ -473,6 +475,8 @@ def ActorLists():
                log(" - SUCCESS",False)
             elif r.status_code==401:
                fatal("apiKey not correct")
+            elif r.status_code==200:
+               log(" - FAILED, check if you have URLbase set in Radarr and configure",False)
             else:
                log(" - FAILED " + str(r.status_code),False)
          else:
