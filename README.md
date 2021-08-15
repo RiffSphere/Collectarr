@@ -53,6 +53,7 @@ In the config folder, make a copy of `collectarr.conf.example`, rename it `colle
 #### Radarr settings
 - **host** - The hostname or IP of Radarr
 - **port** - The port Radarr is using (7878 by default)
+- **URLbase** - If you use URL Base in Radarr, can be found under Settings > General.
 - **apiKey** - Can be found under Settings > General.
 - **https** - [`True`|`False`] - Add `https://` instead of `http://` before the _server_ setting when putting the Radarr URL together. **only http tested**
 
