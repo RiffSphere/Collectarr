@@ -13,7 +13,10 @@ host=EDIT your radarr ip/hotname
 ;   Port
 ;       Just the port number, no :
 port=7878
-
+;   URLbase
+;       If you set URL base in Radarr, enter it here
+;       Should be in the form "/radarr"
+URLbase=
 ;   apiKey
 ;       Your api key
 apiKey=EDIT your radarr api key
