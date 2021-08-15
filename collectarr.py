@@ -146,13 +146,25 @@ def config():
       tmdbapiKey=parser.get("tmdb","apiKey")
    except configparser.NoOptionError:
       tmdbapiKey=""
+   
+   # Try loading URLbase from config. Added later and not always needed, so can't expect it's there
+   try:
+      URLbase=parser.get("Radarr","URLbase")
+   except configparser.NoOptionError:
+      URLbase=""
 
    # Combine config into host
    if https == True:
       host="https://"
    else:
       host="http://"
-   host=host+hosturl+":"+port+"/api/v3/"
+   if not URLbase=="":
+      if not URLbase[:1]=="/":
+         URLbase="/"+URLbase
+      if URLbase[-1:]=="/":
+         URLbase=URLbase[0:len(URLbase)-1]
+
+   host=host+hosturl+":"+port+URLbase+"/api/v3/"
 
    actorblacklist=[]
    collectionblacklist=[]
