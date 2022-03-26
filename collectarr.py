@@ -80,7 +80,8 @@ def config():
          actorcountvoice, actorcountuncredited, \
          movielistnameaddon, actorlistnameaddon, dryrun, \
          actorblacklist, collectionblacklist, \
-         tmdbapiKey
+         tmdbapiKey, \
+         headers
 
    # Load configuration
    parser = configparser.ConfigParser()
@@ -89,6 +90,7 @@ def config():
    # Load mandatory settings
    try:
       # Program info
+      headers = {'Content-type': 'application/json', 'Accept': 'text/json'}
       dryrun=str2bool(parser.get("Collectarr","dryrun").strip())
       doaddcollections=str2bool(parser.get("Collectarr","addcollections").strip())
       doremovecollectarractorlists=str2bool(parser.get("Collectarr","removecollectarractorlists").strip())
@@ -333,7 +335,7 @@ def AddCollections():
       if not dryrun:
          # add list to radarr
          try:
-            r = requests.post(url = host+"importlist?apiKey="+apiKey, data=data)
+            r = requests.post(url = host+"importlist?apiKey="+apiKey, data=data, headers=headers)
          except requests.ConnectionError:
             fatal("can not connect to Radarr, verify it is running, and the host, port and https are set correct in the config file")
          #output result
@@ -467,7 +469,7 @@ def ActorLists():
          if not dryrun:
             # add list to radarr
             try:
-               r = requests.post(url = host+"importlist?apiKey="+apiKey, data=data)
+               r = requests.post(url = host+"importlist?apiKey="+apiKey, data=data, headers=headers)
             except requests.ConnectionError:
                fatal("can not connect to Radarr, verify it is running, and the host, port and https are set correct in the config file")
             #output result
@@ -481,7 +483,6 @@ def ActorLists():
                log(" - FAILED " + str(r.status_code),False)
          else:
             log(" - dryrun set to true, not pushing changes to Radarr",False)
-
 
 ######################
 # MAIN PROGRAM START #
